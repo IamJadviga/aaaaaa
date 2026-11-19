@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  convert-service:
+    build: .
+    container_name: convert-v1
+    ports:
+      - "8204:8004"
+    environment:
+      - MESSAGE=Convert online
+      - APP_VERSION=1.0
+    volumes:
+      - convert-data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8004/health')"]
+      interval: 30s
+      timeout: 10s
+      start_period: 5s
+      retries: 3
+
+volumes:
+  convert-data:
+    name: convert-data

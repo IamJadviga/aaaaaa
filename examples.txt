@@ -1,0 +1,4 @@
+1. GET /convert?value=1.5 -> 1500 метров
+2. GET /convert?value=2.0 -> 2000 метров
+3. GET /health -> {"status": "ok"}
+4. GET /stats -> статистика запросов
