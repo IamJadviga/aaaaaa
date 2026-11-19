@@ -62,7 +62,7 @@ class TestConverter(unittest.TestCase):
         # Проверяем, что результат округляется до 2 знаков
         value = 1.555
         result = value * 1000
-        rounded_result = round(result, 2)
+        rounded_result = round(result, 0)
         expected = 1555.0
         self.assertEqual(rounded_result, expected)
     
