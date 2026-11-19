@@ -57,7 +57,7 @@ jobs:
         run: |
           mkdir -p dist
           cp aaa.py dist/
-          cp Dockerfile dist/
+          cp dockerfile dist/
           cp examples.txt dist/
       
       - name: Upload artifact
