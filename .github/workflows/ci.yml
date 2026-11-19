@@ -56,8 +56,7 @@ jobs:
       - name: Create dist directory
         run: |
           mkdir -p dist
-          cp converter.py dist/
-          cp README.md dist/
+          cp aaa.py dist/
           cp Dockerfile dist/
           cp examples.txt dist/
       
