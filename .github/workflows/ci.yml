@@ -67,44 +67,44 @@ jobs:
           path: dist/
           retention-days: 7
 
-    deploy_test:
-      name: Deploy to Test
-      runs-on: ubuntu-latest
-      needs: package
-      if: github.ref == 'refs/heads/main'
-      environment:
-        name: test/converter
-        url: http://localhost:8104
+  deploy_test:
+    name: Deploy to Test
+    runs-on: ubuntu-latest
+    needs: package
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: test/converter
+      url: http://localhost:8104
       
-      steps:
-        - name: Download artifact
-          uses: actions/download-artifact@v4
-          with:
-            name: dist-package
-            path: deploy/test/
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-package
+          path: deploy/test/
         
-        - name: Check DEPLOY_TOKEN
-          env:
-            DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-          run: |
-            if [ -z "$DEPLOY_TOKEN" ]; then
-              echo "DEPLOY_TOKEN is not set"
-              exit 1
-            fi
-            echo "DEPLOY_TOKEN is set (value hidden)"
-        
-        - name: Smoke test
-          run: |
-            cd deploy/test
-            python converter.py &
-            sleep 2
-            curl -s "http://localhost:8004/convert?value=1.5" | grep -q "1500"
-            echo "Smoke test passed"
-            kill %1 || true
-        
-        - name: Create deployment report
-          run: |
-            echo "Deployment successful" > deployment.txt
-            echo "Commit: ${{ github.sha }}" >> deployment.txt
-            echo "Time: $(date)" >> deployment.txt
-            echo "Environment: test/converter" >> deployment.txt
+      - name: Check DEPLOY_TOKEN
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          if [ -z "$DEPLOY_TOKEN" ]; then
+          echo "DEPLOY_TOKEN is not set"
+            exit 1
+          fi
+          echo "DEPLOY_TOKEN is set (value hidden)"
+      
+      - name: Smoke test
+        run: |
+          cd deploy/test
+          python converter.py &
+          sleep 2
+          curl -s "http://localhost:8004/convert?value=1.5" | grep -q "1500"
+          echo "Smoke test passed"
+          kill %1 || true
+      
+      - name: Create deployment report
+        run: |
+          echo "Deployment successful" > deployment.txt
+          echo "Commit: ${{ github.sha }}" >> deployment.txt
+          echo "Time: $(date)" >> deployment.txt
+          echo "Environment: test/converter" >> deployment.txt
