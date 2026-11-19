@@ -12,7 +12,7 @@ class TestConverter(unittest.TestCase):
     def setUp(self):
         """Настройка перед каждым тестом"""
         # Сбрасываем счётчик перед каждым тестом
-        converter.request_counter['count'] = 0
+        aaa.request_counter['count'] = 0
     
     def test_convert_1km_to_1000m(self):
         """Тест: 1 км = 1000 м"""
@@ -80,9 +80,9 @@ class TestConverter(unittest.TestCase):
     
     def test_request_counter_increments(self):
         """Тест: счётчик запросов увеличивается"""
-        initial_count = converter.request_counter['count']
-        converter.request_counter['count'] += 1
-        self.assertEqual(converter.request_counter['count'], initial_count + 1)
+        initial_count = aaa.request_counter['count']
+        aaa.request_counter['count'] += 1
+        self.assertEqual(aaa.request_counter['count'], initial_count + 1)
     
     def test_json_response_format(self):
         """Тест: формат JSON ответа"""
