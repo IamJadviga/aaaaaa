@@ -1,0 +1,62 @@
+name: CI/CD Pipeline
+
+env:
+  PYTHON_VERSION: '3.11.10'
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.11.10-slim
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Validate config.json.example
+        run: |
+          python -c "import json; json.load(open('config.json.example'))"
+          echo "config.json.example is valid JSON"
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.11.10-slim
+    needs: validate
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run unit tests
+        run: |
+          python -m unittest discover -s tests -v
+
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.11.10-slim
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event.pull_request.draft == false
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create dist directory
+        run: |
+          mkdir -p dist
+          cp converter.py dist/
+          cp README.md dist/
+          cp Dockerfile dist/
+          cp examples.txt dist/
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-package
+          path: dist/
+          retention-days: 7
