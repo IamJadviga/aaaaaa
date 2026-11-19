@@ -4,7 +4,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 import threading
 
-STATE_FILE = '/data/state.json'
+STATE_FILE = 'data/state.json'
 
 request_counter = {'count': 0}
 counter_lock = threading.Lock()
