@@ -96,7 +96,7 @@ jobs:
       - name: Smoke test
         run: |
           cd deploy/test
-          python converter.py &
+          python aaa.py &
           sleep 2
           curl -s "http://localhost:8004/convert?value=1.5" | grep -q "1500"
           echo "Smoke test passed"
