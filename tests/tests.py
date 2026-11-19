@@ -52,7 +52,7 @@ class TestConverter(unittest.TestCase):
         value = 1.555
         result = value * 1000
         rounded_result = round(result, 2)
-        expected = 1555.02
+        expected = 1555.0
         self.assertEqual(rounded_result, expected)
     
     def test_health_endpoint_structure(self):
